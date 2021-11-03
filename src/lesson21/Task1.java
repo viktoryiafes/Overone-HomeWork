@@ -16,22 +16,16 @@ public class Task1 {
         listNumber.add(0);
 
         System.out.println(listNumber);
-        Counter number = new Counter();
-        number.countUnique(listNumber);
-    }
-}
-class Counter{
-    public <integer> Counter(){
+        System.out.println(countUnique(listNumber));
     }
 
-    public void countUnique(ArrayList <Integer> list){
+    public static int countUnique(ArrayList<Integer> list){
         boolean emptyNumber = list.isEmpty();
         if (emptyNumber){
-            System.out.println("0");
+            return 0;
         } else {
             HashSet <Integer> hashSet = new HashSet<>(list);
-            int count = hashSet.size();
-            System.out.println("Count of unique number: " + count);
+            return hashSet.size();
         }
     }
 }
