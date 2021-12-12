@@ -1,10 +1,10 @@
-package by.overone.lesson31.service.impl;
+package lesson31.service.impl;
 
-import by.overone.lesson31.entity.Book;
-import by.overone.lesson31.exception.BookNotFoundException;
-import by.overone.lesson31.repository.IBookRepository;
-import by.overone.lesson31.repository.impl.BookRepository;
-import by.overone.lesson31.service.IBookService;
+import lesson31.entity.Book;
+import lesson31.exception.BookNotFoundException;
+import lesson31.repository.IBookRepository;
+import lesson31.repository.impl.BookRepository;
+import lesson31.service.IBookService;
 
 import java.util.List;
 

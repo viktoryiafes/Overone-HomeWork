@@ -1,4 +1,4 @@
-package by.overone.lesson31.exception;
+package lesson31.exception;
 
 public class BookNotFoundException extends RuntimeException{
     public BookNotFoundException() {

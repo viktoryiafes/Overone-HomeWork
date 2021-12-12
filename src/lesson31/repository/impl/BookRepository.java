@@ -1,7 +1,7 @@
-package by.overone.lesson31.repository.impl;
+package lesson31.repository.impl;
 
-import by.overone.lesson31.entity.Book;
-import by.overone.lesson31.repository.IBookRepository;
+import lesson31.entity.Book;
+import lesson31.repository.IBookRepository;
 
 import java.sql.*;
 import java.util.ArrayList;

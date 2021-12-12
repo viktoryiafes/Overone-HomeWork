@@ -1,6 +1,6 @@
-package by.overone.lesson31.service;
+package lesson31.service;
 
-import by.overone.lesson31.entity.Book;
+import lesson31.entity.Book;
 
 import java.util.List;
 

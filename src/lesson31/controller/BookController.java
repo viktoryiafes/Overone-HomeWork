@@ -1,9 +1,9 @@
-package by.overone.lesson31.controller;
+package lesson31.controller;
 
-import by.overone.lesson31.entity.Book;
-import by.overone.lesson31.exception.BookNotFoundException;
-import by.overone.lesson31.service.IBookService;
-import by.overone.lesson31.service.impl.BookService;
+import lesson31.entity.Book;
+import lesson31.exception.BookNotFoundException;
+import lesson31.service.IBookService;
+import lesson31.service.impl.BookService;
 
 import java.util.List;
 import java.util.Scanner;

@@ -1,6 +1,6 @@
-package by.overone.lesson31.repository;
+package lesson31.repository;
 
-import by.overone.lesson31.entity.Book;
+import lesson31.entity.Book;
 
 import java.util.List;
 
