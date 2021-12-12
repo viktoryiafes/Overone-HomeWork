@@ -6,6 +6,7 @@ import lesson31.service.IBookService;
 import lesson31.service.impl.BookService;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class BookController {
@@ -44,18 +45,27 @@ public class BookController {
         List<Book> books = bookService.readAll();
         viewBooks(books);
         System.out.println("Select one of the following book:");
-        int bookId = new Scanner(System.in).nextInt();
+        
         System.out.println("1. Update book");
         System.out.println("2. Delete book");
         System.out.println("3. Exit");
         boolean flag = true;
+        int bookId = new Scanner(System.in).nextInt();
         while (flag) {
             switch (bookId) {
                 case 1:
-                    updateBook(bookId);
+                    System.out.println("Select updated book by ID: ");
+                    int idBookUpdate = new Scanner(System.in).nextInt();
+                    for (Book book : books) {
+                        if (idBookUpdate == book.getId()) {
+                            updateBook(book);
+                        }
+                    }
                     break;
                 case 2:
-                    deleteBook(bookId);
+                    System.out.println("Select deleted book by ID: ");
+                    int idBookDelete = new Scanner(System.in).nextInt();
+                    deleteBook(idBookDelete);
                     break;
                 case 3:
                     flag = false;
@@ -67,16 +77,38 @@ public class BookController {
         }
     }
 
-    public void updateBook(int bookId) {
-        // TODO
+    public void updateBook(Book book) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Select a book to edit");
+        System.out.print("Are you want to edit title? (1 or 2)");
+        char choice = scanner.nextLine().toUpperCase(Locale.ROOT).charAt(0);
+        if (choice == '1') {
+            book.setTitle(scanner.nextLine());
+        }else {
+            mainMenu();
+        }
+
+        System.out.print("Are you want to edit author? (1 or 2)");
+        choice = scanner.nextLine().toUpperCase(Locale.ROOT).charAt(0);
+        if (choice == '1') {
+            book.setAuthor(scanner.nextLine());
+        }else {
+            mainMenu();
+        }
+
+        System.out.print("Are you want to edit author? (1 or 2)");
+        choice = scanner.nextLine().toUpperCase(Locale.ROOT).charAt(0);
+        if (choice == '1') {
+            book.setQuantity(scanner.nextLong());
+        }else{
+            mainMenu();
+        }
+        bookService.updateBook(book);
     }
 
     public void deleteBook(int bookId) {
-        // TODO
-    }
-
-    public void addBook() {
-        // TODO
+        bookService.deleteBook(bookId);
     }
 
     public void readByAuthor() {

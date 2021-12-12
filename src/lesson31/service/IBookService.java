@@ -8,4 +8,8 @@ public interface IBookService {
     List<Book> readAll();
 
     List<Book> readByAuthor(String authorName);
+
+    void updateBook(Book bookToUpdate);
+
+    void deleteBook(int idFromDelete);
 }

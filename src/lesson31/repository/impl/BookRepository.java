@@ -56,4 +56,43 @@ public class BookRepository implements IBookRepository {
         }
         return books;
     }
+
+    @Override
+    public void updateBook(Book bookToUpdate) {
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/learningwords",
+                    "postgres", "12345");
+
+            String sqlString = "UPDATE book_schema.books SET title = ?, author = ?, quantity = ? WHERE id = ?";
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sqlString);
+            preparedStatement.setString(1, bookToUpdate.getTitle());
+            preparedStatement.setString(2, bookToUpdate.getAuthor());
+            preparedStatement.setInt(3, bookToUpdate.getQuantity().intValue());
+            preparedStatement.setInt(4, bookToUpdate.getId().intValue());
+            preparedStatement.execute();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteBook(int idFromDelete) {
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/learningwords",
+                    "postgres", "12345");
+
+            String sqlString = "DELETE FROM book_schema.books WHERE id=?";
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sqlString);
+            preparedStatement.setInt(1, idFromDelete);
+            preparedStatement.execute();
+            connection.close();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -25,4 +25,14 @@ public class BookService implements IBookService {
         }
         return books;
     }
+
+    @Override
+    public void updateBook(Book bookToUpdate) {
+        bookRepository.updateBook(bookToUpdate);
+    }
+
+    @Override
+    public void deleteBook(int idFromDelete) {
+        bookRepository.deleteBook(idFromDelete);
+    }
 }
