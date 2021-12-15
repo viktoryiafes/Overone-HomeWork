@@ -8,16 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BookRepository implements IBookRepository {
+    String driverSQL = "com.mysql.cj.jdbc.Driver";
     @Override
     public List<Book> readAll() {
         List<Book> books = new ArrayList<>();
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(driverSQL);
             Connection connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/learningwords",
-                            "postgres", "12345");
+                    .getConnection("jdbc:mysql://localhost:3306/book",
+                            "root", "65456545");
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM learningwords_sys.books");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM book.book_list");
             while (resultSet.next()) {
                 Long bookId = Long.valueOf(resultSet.getString(1));
                 String title = resultSet.getString(2);
@@ -33,14 +34,37 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
+    public boolean addBook(Book bookToAdd) {
+        try {
+            Class.forName(driverSQL);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book",
+                    "root", "65456545");
+
+            String sqlString = "INSERT INTO book.book_list (id, title, author, quantity) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sqlString);
+            preparedStatement.setInt(1, bookToAdd.getId().intValue());
+            preparedStatement.setString(2, bookToAdd.getTitle());
+            preparedStatement.setString(3, bookToAdd.getAuthor());
+            preparedStatement.setInt(4, bookToAdd.getQuantity().intValue());
+            preparedStatement.execute();
+            connection.close();
+            return true;
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public List<Book> readByAuthor(String authorName) {
         List<Book> books = new ArrayList<>();
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/learningwords",
-                    "postgres", "12345");
+            Class.forName(driverSQL);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book",
+                    "root", "65456545");
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM learningwords_sys.books WHERE author = ?");
+                    connection.prepareStatement("SELECT * FROM book.book_list WHERE author = ?");
             preparedStatement.setString(1, authorName);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -60,11 +84,11 @@ public class BookRepository implements IBookRepository {
     @Override
     public void updateBook(Book bookToUpdate) {
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/learningwords",
-                    "postgres", "12345");
+            Class.forName(driverSQL);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book",
+                    "root", "65456545");
 
-            String sqlString = "UPDATE book_schema.books SET title = ?, author = ?, quantity = ? WHERE id = ?";
+            String sqlString = "UPDATE book.book_list SET title = ?, author = ?, quantity = ? ";
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sqlString);
             preparedStatement.setString(1, bookToUpdate.getTitle());
@@ -81,11 +105,11 @@ public class BookRepository implements IBookRepository {
     @Override
     public void deleteBook(int idFromDelete) {
         try {
-            Class.forName("org.postgresql.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/learningwords",
-                    "postgres", "12345");
+            Class.forName(driverSQL);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/book",
+                    "root", "65456545");
 
-            String sqlString = "DELETE FROM book_schema.books WHERE id=?";
+            String sqlString = "DELETE FROM book.book_list WHERE id=?";
             PreparedStatement preparedStatement =
                     connection.prepareStatement(sqlString);
             preparedStatement.setInt(1, idFromDelete);

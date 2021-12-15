@@ -6,7 +6,6 @@ import lesson31.service.IBookService;
 import lesson31.service.impl.BookService;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class BookController {
@@ -21,7 +20,7 @@ public class BookController {
             System.out.println("Select one of the following option:\n");
             System.out.println("1. Get all books");
             System.out.println("2. Get book by author");
-            System.out.println("3. Add book"); // TODO
+            System.out.println("3. Add book");
             System.out.println("4. Exit");
             int result = new Scanner(System.in).nextInt();
             switch (result) {
@@ -32,6 +31,9 @@ public class BookController {
                     readByAuthor();
                     break;
                 case 3:
+                    addBook();
+                    break;
+                case 4:
                     System.out.println("Bye-bye my dear friend");
                     flag = false;
                     break;
@@ -44,21 +46,20 @@ public class BookController {
     public void readAll() {
         List<Book> books = bookService.readAll();
         viewBooks(books);
-        System.out.println("Select one of the following book:");
         
         System.out.println("1. Update book");
         System.out.println("2. Delete book");
         System.out.println("3. Exit");
         boolean flag = true;
-        int bookId = new Scanner(System.in).nextInt();
+        int OptionId = new Scanner(System.in).nextInt();
         while (flag) {
-            switch (bookId) {
+            switch (OptionId) {
                 case 1:
                     System.out.println("Select updated book by ID: ");
                     int idBookUpdate = new Scanner(System.in).nextInt();
-                    for (Book book : books) {
-                        if (idBookUpdate == book.getId()) {
-                            updateBook(book);
+                    for (Book bookRead : books) {
+                        if (idBookUpdate == bookRead.getId()) {
+                            updateBook(bookRead);
                         }
                     }
                     break;
@@ -77,38 +78,61 @@ public class BookController {
         }
     }
 
-    public void updateBook(Book book) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Select a book to edit");
-        System.out.print("Are you want to edit title? (1 or 2)");
-        char choice = scanner.nextLine().toUpperCase(Locale.ROOT).charAt(0);
-        if (choice == '1') {
-            book.setTitle(scanner.nextLine());
-        }else {
-            mainMenu();
+    public void addBook() {
+        System.out.println("Please enter title: ");
+        String title = new Scanner(System.in).nextLine();
+        System.out.println("Please enter author: ");
+        String author = new Scanner(System.in).nextLine();
+        System.out.println("Please enter quantity: ");
+        Long quantity = new Scanner(System.in).nextLong();
+        try{
+           // bookService.addBook(title,author,quantity);
+        } catch (BookNotFoundException exception){
+            System.err.println(exception.getMessage());
         }
+    }
 
-        System.out.print("Are you want to edit author? (1 or 2)");
-        choice = scanner.nextLine().toUpperCase(Locale.ROOT).charAt(0);
-        if (choice == '1') {
-            book.setAuthor(scanner.nextLine());
-        }else {
-            mainMenu();
+    public void updateBook(Book bookUpdate) {
+        System.out.println("1. Update title");
+        System.out.println("2. Update author");
+        System.out.println("3. Update quantity");
+        System.out.println("4. Main menu");
+        boolean flag = true;
+        int OptionId = new Scanner(System.in).nextInt();
+        while (flag) {
+            switch (OptionId) {
+                case 1:
+                    System.out.print("Are you want to edit title?"+"\n");
+                    bookUpdate.setTitle(new Scanner(System.in).nextLine());
+                    bookService.updateBook(bookUpdate);
+                    break;
+                case 2:
+                    System.out.print("Are you want to edit author?"+"\n");
+                    bookUpdate.setAuthor(new Scanner(System.in).nextLine());
+                    bookService.updateBook(bookUpdate);
+                    break;
+                case 3:
+                    System.out.print("Are you want to edit quantity?"+"\n");
+                    bookUpdate.setQuantity(new Scanner(System.in).nextLong());
+                    bookService.updateBook(bookUpdate);
+                    break;
+                case 4:
+                    mainMenu();
+                    break;
+                default:
+                    flag = false;
+                    System.err.println("Something went wrong ..");
+            }
         }
-
-        System.out.print("Are you want to edit author? (1 or 2)");
-        choice = scanner.nextLine().toUpperCase(Locale.ROOT).charAt(0);
-        if (choice == '1') {
-            book.setQuantity(scanner.nextLong());
-        }else{
-            mainMenu();
-        }
-        bookService.updateBook(book);
     }
 
     public void deleteBook(int bookId) {
-        bookService.deleteBook(bookId);
+        int idBookDelete = new Scanner(System.in).nextInt();
+        try {
+            bookService.deleteBook(idBookDelete);
+        } catch (BookNotFoundException exception) {
+            System.err.println(exception.getMessage());
+        }
     }
 
     public void readByAuthor() {
@@ -117,8 +141,8 @@ public class BookController {
         List<Book> books = null;
         try {
             books = bookService.readByAuthor(authorName);
-        } catch (BookNotFoundException e) {
-            System.err.println(e.getMessage());
+        } catch (BookNotFoundException exception) {
+            System.err.println(exception.getMessage());
         }
         viewBooks(books);
     }

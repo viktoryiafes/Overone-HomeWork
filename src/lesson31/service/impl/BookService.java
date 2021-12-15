@@ -27,6 +27,11 @@ public class BookService implements IBookService {
     }
 
     @Override
+    public boolean addBook(Book book) {
+        return bookRepository.addBook(book);
+    }
+
+    @Override
     public void updateBook(Book bookToUpdate) {
         bookRepository.updateBook(bookToUpdate);
     }
